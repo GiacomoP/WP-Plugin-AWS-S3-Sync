@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Amazon S3 Sync
  * Description: A plugin to sync files on Amazon S3
- * Version: 1.0
+ * Version: 1.1
  * Author: Giacomo Persichini
  * Author URI: http://giacomo.pw
  * License: GPLv3

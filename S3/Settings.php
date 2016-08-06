@@ -17,6 +17,7 @@ class Settings
                 'secret' => 'YOUR_SECRET_KEY'
             ],
             'aws_s3_bucket_name' => 'YOUR_BUCKET_NAME',
+            'aws_s3_region' => 'eu-west-1',
             'aws_sync_folder' => '/agreements',
             'aws_sync_every' => 'hourly',
             'aws_last_sync' => 'never'
@@ -136,6 +137,14 @@ class Settings
             ['label_for' => 'aws_s3_bucket_name']
         );
         add_settings_field(
+            'aws_s3_region',
+            'AWS Region',
+            [$this, 'awsRegionRender'],
+            'aws_s3_api',
+            'aws_s3_api_section',
+            ['label_for' => 'aws_s3_region']
+        );
+        add_settings_field(
             'aws_sync_folder',
             'Folder to sync',
             [$this, 'awsFolderToSyncRender'],
@@ -180,11 +189,41 @@ EOD;
 EOD;
     }
 
+    public function awsRegionRender($args)
+    {
+        $regions = [
+            'us-east-1' => 'US Standard',
+            'us-west-2' => 'Oregon',
+            'us-west-1' => 'Northern California',
+            'eu-west-1' => 'Ireland',
+            'eu-central-1' => 'Frankfurt',
+            'ap-southeast-1' => 'Singapore',
+            'ap-northeast-1' => 'Tokyo',
+            'ap-northeast-2' => 'Seoul',
+            'ap-southeast-2' => 'Sydney',
+            'sa-east-1' => 'Sao Paulo',
+            'us-gov-west-1' => 'GovCloud',
+            'cn-north-1' => 'China (Beijing)'
+        ];
+        $current = get_option('aws_s3_region');
+
+        echo <<<EOD
+        <select name="aws_s3_region" id="{$args['label_for']}">
+EOD;
+        foreach ($regions as $awsName => $label) {
+            $selected = selected($awsName, $current);
+            echo <<<EOD
+            <option value="{$awsName}" {$selected}>$label</option>
+EOD;
+        }
+        echo "</select>";
+    }
+
     public function awsFolderToSyncRender($args)
     {
         $folder = get_option('aws_sync_folder');
         echo <<<EOD
-        <input type="text" name="aws_s3_sync_folder" value="{$folder}" id="{$args['label_for']}">
+        <input type="text" name="aws_sync_folder" value="{$folder}" id="{$args['label_for']}">
 EOD;
     }
 
@@ -217,7 +256,7 @@ EOD;
     {
         $lastSync = get_option('aws_last_sync');
         if ($lastSync !== 'never') {
-            $lastSync = date('l, F j, Y @ g:i:s A', $lastSync);
+            $lastSync = date('l, F j, Y @ g:i:s A', (int) $lastSync);
         }
         echo "<p>{$lastSync}</p>";
         echo <<<EOD

@@ -33,7 +33,7 @@ class Syncer
         try {
             $client = new S3Client([
                 'version'     => '2006-03-01',
-                'region'      => 'eu-west-1',
+                'region'      => get_option('aws_s3_region'),
                 'credentials' => $credentials
             ]);
             $client->uploadDirectory($folder, $bucket, null, ['concurrency' => 20]);
