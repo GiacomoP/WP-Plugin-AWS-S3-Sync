@@ -20,7 +20,7 @@ class Settings
             'aws_s3_region' => 'eu-west-1',
             'aws_sync_folder' => '/agreements',
             'aws_sync_every' => 'hourly',
-            'aws_last_sync' => 'never'
+            'aws_last_sync' => 0
         ]
     ];
 
@@ -254,13 +254,15 @@ EOD;
 
     public function awsLastSyncRender()
     {
-        $lastSync = get_option('aws_last_sync');
-        if ($lastSync !== 'never') {
-            $lastSync = date('l, F j, Y @ g:i:s A', (int) $lastSync);
+        $lastSyncTimestamp = get_option('aws_last_sync');
+        if ($lastSyncTimestamp != 0) {
+            $lastSyncFormatted = date('l, F j, Y @ g:i:s A', (int) $lastSync);
+        } else {
+            $lastSyncFormatted = 'never';
         }
-        echo "<p>{$lastSync}</p>";
+        echo "<p>{$lastSyncFormatted}</p>";
         echo <<<EOD
-        <input type="hidden" name="aws_last_sync" value="{$lastSync}">
+        <input type="hidden" name="aws_last_sync" value="{$lastSyncTimestamp}">
 EOD;
     }
 
