@@ -6,6 +6,6 @@ The plugin has a very simple administration page, and it will periodically sync 
 # Installation
 Just run:
 
-`$ composer install
+`$ composer install`
 
 before activating the plugin in Wordpress.
