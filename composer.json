@@ -1,0 +1,19 @@
+{
+    "name": "vendor/s3-sync",
+    "description": "A plugin to sync files on Amazon S3.",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Giacomo Persichini",
+            "email": "giacomopersichini@gmail.com"
+        }
+    ],
+    "require": {
+        "aws/aws-sdk-php": "3.18.37"
+    },
+    "autoload": {
+        "psr-4": {
+            "S3\\": "S3"
+        }
+    }
+}
